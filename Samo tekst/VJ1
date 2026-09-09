@@ -1,0 +1,49 @@
+Prvo offensive security - trazenje greski i rupa u zastiti
+Najcestijiposao je penetration tester - individual that is legally 
+employed by an organisation to find vulnerabilities in their products
+Cloud security
+
+Drugo defensive security - zaustavljanje napada
+security analyst - individual koji monitora sisteme i detectira napade
+Incident responder - obavjestava kakav je bio napad
+malware analasys - kuis kaj malware dela i onda ga identificiras i sprijecis 
+
+network - stvari conecctane
+computing - network more bti forman od 2 do 2 bilijuna uredjaja
+
+internet - ogromni network koji se sastoji od puno malih networka
+- inventad od strane Tim Berners-Lee by the creation of the World Wide Web (WWW)
+
+indentificiramo uredjaj sa ip adresom i MAC adresom(a media acces control) - ko serial number
+IP(internet protocol) adressing i subnetting
+moemo menjat ip adrese al nemfru bit iste u istom networku
+IPv6 slozeniji od IPv4
+MAC adress more biti faked
+
+Ping is one of the most fundamental network tools available to us. 
+Ping uses ICMP (Internet Control Message Protocol)
+
+Danas se skro sve radi u browseru
+Kaj jaci web, to vise prilika za napade
+
+In 2017, Equifax's (opens in new tab) sensitive customer data of nearly 150 
+million Americans was compromised due to an vulnerability (opens in new tab). 
+By abusing this vulnerability, the attackers were able to access internal 
+databases storing valuable customer data.
+Web app owner kriv za losu zastituž
+
+Svaka stranica da radi treba: aplikaciju, web server i host mašinu
+najcestiji web serveri: apache, nginx, internet information services (IIS)
+
+Content Delivery Network (CDN)
+CDNs store and serve cached content from servers closer to the user to reduce latency
+
+Web Application firewall(WAF)
+WAFs are a powerful tool that can be integrated as another layer of protection for 
+websites and web applications.
+
+Antivirus (AV)
+AVs are often misunderstood as a blanket protection measure, but they are primarily 
+made to safeguard endpoints, such as desktops, laptops, and servers, from known malicious 
+files and programs. Most AVs rely on signature-based detection, which means they compare 
+files with a database of known malware or patterns.
