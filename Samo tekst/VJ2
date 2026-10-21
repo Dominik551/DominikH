@@ -1,0 +1,9 @@
+Emulation - organiziran napad na organizaciju kako bi se testirala obrana sustava
+Threat emulation - napad ali od fizickog hakera
+Threat emulation is not a single fixed activity. It exists on a spectrum depending on the depth and scope of the exercise:
+
+    Atomic Testing: Running individual, isolated technique-level tests mapped to ATT&CK. This is the most focused and repeatable form of emulation. You will work with this in the Atomic Red Team room.
+    Adversary Emulation: Chaining multiple TTPs together to replicate a specific threat actor's campaign end to end, from initial access through to impact.
+    Purple Teaming: Red and blue teams working together simultaneously, running techniques and checking detections in real time. You will experience this in the final rooms of this module.
+The MITRE ATT&CK Framework is an industry-standard knowledge base of adversarial TTPs observed in real-world attacks and breaches. It is the common language of threat emulation. When emulation teams plan an exercise, they use ATT&CK to identify what techniques a specific adversary uses, understand how those techniques work, and map detections and mitigations against them.
+The ATT&CK matrix organises 14 tactics from reconnaissance to impact, with techniques and sub-techniques listed under each. The ATT&CK Navigator extends this by allowing teams to create colour-coded heatmap layers of techniques attributed to a specific adversary or relevant to a specific platform.

@@ -1,0 +1,543 @@
+ChatGPT said:
+Aktivno izviđanje (Active Reconnaissance) – sažetak
+
+Aktivno izviđanje je proces izravnog povezivanja s ciljanim sustavom ili mrežom radi prikupljanja informacija. Za razliku od pasivnog izviđanja, ono ostavlja tragove poput zapisa u logovima, sigurnosnih upozorenja i blokada.
+Pasivno vs. aktivno izviđanje
+
+    Pasivno izviđanje: prikupljanje javno dostupnih podataka bez izravnog kontaktiranja cilja, npr. DNS zapisi, WHOIS, certifikati i Shodan.
+
+    Aktivno izviđanje: izravna komunikacija s ciljem, npr. posjećivanje web-stranica, pinganje računala i provjera portova.
+
+Alati za aktivno izviđanje
+
+    Web preglednik i Developer Tools – pregled HTTP zaglavlja, JavaScript koda i certifikata.
+
+    Ping – provjera dostupnosti računala i analiza TTL vrijednosti.
+
+    Traceroute / MTR – praćenje mrežne putanje i otkrivanje međučvorova.
+
+    Telnet – povezivanje sa servisima i prikupljanje informacija o njima (banner grabbing).
+
+    Netcat (nc) – provjera portova, prikupljanje bannera i jednostavna komunikacija klijent-poslužitelj.
+
+Važne napomene
+
+    Aktivno izviđanje lakše je otkriti jer ostavlja tragove u logovima, vatrozidima i IDS/WAF sustavima.
+
+    Moderni sustavi koriste alate poput Cloudflarea, Akamaija, SIEM-a i EDR-a za otkrivanje sumnjivih aktivnosti.
+
+    HTTPS je danas standard, dok se Telnet smatra zastarjelim jer često prenosi podatke u otvorenom tekstu.
+
+    Za rad s mrežnim alatima potrebno je poznavati osnove TCP-a, UDP-a, ICMP-a i mrežnih portova.
+
+    Za pristup vanjskim ciljevima u TryHackMe okruženju može biti potrebno povezivanje putem OpenVPN-a.
+
+Važno pravilo: Nikada nemoj provoditi aktivno izviđanje bez izričitog dopuštenja, primjerice ugovora za penetracijsko testiranje ili jasno definiranog bug bounty programa.
+Ciljevi učenja
+
+Nakon ove lekcije znat ćeš:
+
+    pregledavati web-stranice i njihove tehničke podatke
+
+    provjeravati dostupnost računala pomoću pinga
+
+    pratiti mrežne putanje pomoću Traceroutea i MTR-a
+
+    koristiti Telnet za prikupljanje informacija o servisima
+
+    koristiti Netcat za provjeru portova i komunikaciju.
+
+Ukratko: Aktivno izviđanje daje detaljnije informacije o cilju, ali je rizičnije i lakše ga je otkriti od pasivnog izviđanja.
+
+
+Web preglednik za aktivno izviđanje – sažetak
+
+Web preglednik jedan je od najjednostavnijih alata za aktivno izviđanje jer se njegov promet često miješa s normalnim korisničkim aktivnostima.
+1. Osnove portova i protokola
+
+    HTTP – port 80: standardni port za nešifrirani web-promet.
+
+    HTTPS – port 443: standardni port za šifrirani web-promet.
+
+    HTTP/3 – QUIC: koristi UDP i port 443 te omogućuje brže i pouzdanije povezivanje. U pregledniku se označava kao h3.
+
+    Nestandardni portovi: mogu se provjeriti izravnim unosom porta u URL, npr. https://target.com:8443/.
+
+2. Developer Tools
+
+Otvaraju se prečacem Ctrl + Shift + I na Windowsu/Linuxu ili Option + Command + I na macOS-u.
+
+    Network – prikazuje zahtjeve, odgovore, HTTP zaglavlja, kolačiće i statusne kodove.
+
+    Console – izvršavanje JavaScripta i pregled pogrešaka.
+
+    Sources – pregled HTML-a, CSS-a i JavaScripta. Mogu se pronaći skriveni API endpointi, direktoriji i komentari programera.
+
+    Application / Storage – pregled kolačića, Local Storagea i Session Storagea, u kojima se ponekad mogu pronaći osjetljivi podaci.
+
+    Security – pregled TLS certifikata, izdavatelja, valjanosti i SAN zapisa koji mogu otkriti dodatne poddomene.
+
+3. Korisna proširenja preglednika
+
+    FoxyProxy – preusmjeravanje prometa kroz različite proxy poslužitelje.
+
+    User-Agent Switcher and Manager – promjena User-Agent zaglavlja radi simuliranja različitih preglednika i uređaja.
+
+    Wappalyzer – otkriva tehnologije web-stranice, primjerice CMS, web-poslužitelje, JavaScript okvire i CDN-ove.
+
+    BuiltWith Technology Profiler – alternativa za prepoznavanje tehnologija.
+
+    WhatRuns – jednostavan alat za otkrivanje korištenih tehnologija.
+
+    Library Detector – prepoznaje JavaScript biblioteke i okvire.
+
+4. Sigurnosna napomena
+
+Iako pregledavanje izgleda kao normalna aktivnost, neuobičajeno ponašanje može aktivirati WAF ili druge sigurnosne sustave. Primjeri su velik broj zahtjeva u kratkom vremenu, promjene zaglavlja i neuobičajeni User-Agent podaci.
+
+Zapamti: Za aktivno izviđanje uvijek je potrebno izričito dopuštenje vlasnika sustava.
+
+
+Ping – skraćene bilješke
+1. Što je Ping?
+
+Ping je alat za provjeru dostupnosti računala ili poslužitelja preko mreže.
+
+    Koristi protokol ICMP.
+
+    Echo Request (Type 8) – zahtjev koji šaljemo.
+
+    Echo Reply (Type 0) – odgovor koji primamo.
+
+    Pomaže provjeriti je li cilj dostupan i koliko traje komunikacija.
+
+2. Osnovne naredbe
+
+Linux / macOS:
+bash
+
+ping -c 5 MACHINE_IP
+ping -c 5 tryhackme.com
+
+Windows:
+cmd
+
+ping -n 5 MACHINE_IP
+
+    -c 5 – šalje 5 paketa na Linuxu/macOS-u.
+
+    -n 5 – šalje 5 paketa na Windowsu.
+
+    -4 – koristi IPv4.
+
+    -6 – koristi IPv6.
+
+    Ctrl + C – zaustavlja ping koji se neprekidno izvršava.
+
+3. Kako čitati rezultate?
+
+    0% packet loss – svi paketi su stigli, veza je uspješna.
+
+    100% packet loss – nema odgovora; ICMP može biti blokiran ili cilj nedostupan.
+
+    Low latency – malo vrijeme odziva.
+
+    High latency – spor odgovor, moguće zbog udaljenosti ili zagušenja mreže.
+
+Primjer:
+text
+
+64 bytes from MACHINE_IP: ttl=64 time=0.512 ms
+
+    ttl=64 – preostala vrijednost TTL-a.
+
+    time=0.512 ms – vrijeme povratka paketa.
+
+4. Što je TTL?
+
+TTL (Time To Live) određuje koliko mrežnih usmjerivača (routera) paket može proći prije nego što bude odbačen. Svaki router smanjuje TTL za 1.
+
+Uobičajene početne vrijednosti:
+
+    Linux: 64
+
+    Windows: 128
+
+TTL može pomoći u procjeni operacijskog sustava, ali nije potpuno pouzdan jer se smanjuje prolaskom kroz routere.
+
+Primjer: ako je primljeni TTL 58, početna vrijednost mogla je biti 64, što bi značilo približno 6 hopova.
+5. Ako Ping ne radi
+
+Mogući uzroci:
+
+    Ciljno računalo je ugašeno ili se još pokreće.
+
+    Vatrozid blokira ICMP.
+
+    Ne postoji ispravna mrežna ruta.
+
+    Mreža ili pružatelj usluge blokira ICMP promet.
+
+Rezultat
+	
+
+Značenje
+
+Brz odgovor
+	
+
+Cilj odgovara na ICMP
+
+Destination Host Unreachable
+	
+
+Cilj nije dostupan ili nema rute
+
+100% packet loss
+	
+
+ICMP je možda blokiran ili cilj ne odgovara
+
+Visok latency
+	
+
+Moguće zagušenje ili velika udaljenost
+
+Ako Ping ne radi, to ne znači nužno da je računalo ugašeno. Možeš pokušati provjeriti dostupnost preko TCP-a ili UDP-a pomoću alata kao što je Nmap.
+Za zapamtiti
+
+    Ping = provjera dostupnosti uređaja.
+
+    ICMP = protokol koji Ping koristi.
+
+    TTL = pomaže procijeniti udaljenost i mogući operacijski sustav.
+
+    Packet loss = postotak paketa na koje nije stigao odgovor.
+
+    Prije testiranja u TryHackMeu pokreni AttackBox i Lab Machine te koristi samo dodijeljeni laboratorijski cilj.
+
+    Traceroute – skraćene bilješke
+1. Što je Traceroute?
+
+Traceroute je alat koji prikazuje mrežnu putanju od našeg računala do cilja. Otkriva IP adrese usmjerivača (routera), odnosno broj hopova između nas i odredišta.
+
+Koristi se za:
+
+    otkrivanje mrežne putanje
+
+    prepoznavanje kašnjenja i problema u mreži
+
+    pronalaženje mjesta na kojem se promet blokira.
+
+2. Osnovne naredbe
+
+Linux / macOS:
+bash
+
+traceroute 10.112.133.21
+
+Windows:
+cmd
+
+tracert 10.112.133.21
+
+Dodatne naredbe:
+bash
+
+traceroute -6 MACHINE_IPV6
+traceroute -T 10.112.133.21
+traceroute -I 10.112.133.21
+mtr 10.112.133.21
+
+    -6 – koristi IPv6.
+
+    -T – koristi TCP pakete.
+
+    -I – koristi ICMP pakete.
+
+    mtr – kombinira Traceroute i Ping te prikazuje kašnjenje i gubitak paketa u stvarnom vremenu.
+
+3. Kako Traceroute radi?
+
+Koristi TTL (Time To Live), vrijednost koja se smanjuje za 1 na svakom routeru.
+
+    Šalje paket s TTL-om 1 – odgovara prvi router.
+
+    Zatim šalje paket s TTL-om 2 – odgovara drugi router.
+
+    Postupak se ponavlja dok paket ne stigne do odredišta.
+
+Kada TTL dođe do 0, router odbacuje paket i obično šalje ICMP poruku Time-to-Live Exceeded.
+4. Kako čitati rezultate?
+
+    Hop – jedan korak, odnosno router na putanji.
+
+    IP adresa – adresa routera koji je odgovorio.
+
+    Vrijeme u ms – vrijeme potrebno da odgovor stigne natrag.
+
+    * – router nije odgovorio na taj pokušaj; moguće je da blokira ili ograničava odgovore.
+
+Ako je posljednji hop IP adresa cilja, Traceroute je uspješno stigao do odredišta.
+5. Zašto se putanja mijenja?
+
+Traceroute ne mora svaki put prikazati istu putanju jer mreže koriste:
+
+    dinamičko usmjeravanje (BGP, OSPF)
+
+    load balancing – raspodjelu prometa
+
+    anycast – usmjeravanje prema dostupnoj lokaciji servisa
+
+    alternativne putanje u slučaju kvara.
+
+Zbog toga se mogu mijenjati broj hopova, IP adrese i vremena odgovora.
+Za zapamtiti
+
+    Ping provjerava dostupnost cilja.
+
+    Traceroute prikazuje putanju do cilja.
+
+    MTR kontinuirano prati putanju, kašnjenje i gubitak paketa.
+
+    * ne znači nužno da je router nedostupan – možda samo ne šalje odgovore.
+
+    Traceroute na Linuxu zadano često koristi UDP, ali može koristiti i TCP ili ICMP.
+
+Važno: Testiraj samo sustave za koje imaš dopuštenje, primjerice dodijeljeni TryHackMe laboratorij.
+
+
+Telnet – skraćene bilješke
+1. Što je Telnet?
+
+Telnet je protokol razvijen 1969. godine za udaljenu komunikaciju s računalom putem naredbenog retka.
+
+    Zadani port: 23
+
+    Prenosi podatke u otvorenom tekstu (cleartext).
+
+    Korisnička imena i lozinke mogu se presresti.
+
+    Sigurnija alternativa je SSH, koji šifrira komunikaciju.
+
+2. Telnet za aktivno izviđanje
+
+Telnet se može koristiti za banner grabbing – povezivanje s portom i čitanje odgovora poslužitelja kako bi se otkrili naziv i verzija servisa.
+
+Primjer povezivanja na web-poslužitelj:
+bash
+
+telnet 10.112.133.21 80
+
+Zatim pošalji HTTP zahtjev:
+http
+
+GET / HTTP/1.1
+Host: example
+
+Nakon naredbe Host pritisni Enter dva puta.
+3. Kako čitati odgovor?
+
+Primjer odgovora:
+http
+
+HTTP/1.1 200 OK
+Server: nginx/1.6.2
+Content-Type: text/html
+
+    200 OK – zahtjev je uspješno obrađen.
+
+    Server: nginx/1.6.2 – otkriva softver i njegovu verziju.
+
+    Content-Type – vrsta sadržaja odgovora.
+
+Otkrivene verzije mogu se usporediti s bazama poznatih ranjivosti kao što su CVE i Exploit-DB.
+4. Ostale primjene
+
+Telnet može komunicirati s različitim TCP servisima, primjerice:
+
+    FTP – port 21: poslužitelj često odmah prikazuje svoj banner.
+
+    HTTP – port 80: možeš poslati HTTP zahtjev.
+
+    SMTP / POP3: koriste se naredbe specifične za te protokole.
+
+5. Sigurnije alternative
+
+    Netcat (nc) – povezivanje na TCP portove i banner grabbing.
+
+    curl – slanje HTTP zahtjeva i pregled zaglavlja.
+
+    OpenSSL (openssl s_client) – povezivanje sa servisima koji koriste TLS.
+
+    Ncat (ncat --ssl) – povezivanje sa šifriranim servisima.
+
+Za HTTPS možeš koristiti:
+bash
+
+curl --head https://10.112.133.21
+
+ili:
+bash
+
+openssl s_client -connect 10.112.133.21:443
+
+Telnet sam po sebi ne podržava TLS šifriranje.
+Za zapamtiti
+
+    Telnet = udaljena komunikacija, zadani port 23.
+
+    Banner grabbing = otkrivanje informacija o servisu i njegovoj verziji.
+
+    Cleartext = podaci se prenose bez šifriranja.
+
+    SSH je sigurna alternativa za udaljeni pristup.
+
+    Za šifrirane servise koriste se alati poput curl i openssl s_client.
+
+Važno: Banner grabbing i provjeru portova provodi samo na sustavima za koje imaš dopuštenje.
+
+## Netcat (nc) – skraćene bilješke
+
+### 1. Što je Netcat?
+
+Netcat (`nc`) je mrežni alat koji podržava TCP i UDP protokole. Može raditi kao klijent koji se povezuje na port ili kao poslužitelj koji osluškuje dolazne veze.
+
+Koristi se za:
+
+- Banner grabbing – otkrivanje softvera i verzije servisa.
+- Port probing – provjeru povezivanja na portove.
+- Client-server komunikaciju – slanje i primanje teksta.
+- Jednostavan prijenos podataka.
+
+### 2. Banner grabbing
+
+Primjer povezivanja na web-poslužitelj:
+
+bash
+```
+nc 10.112.159.124 80
+```
+
+Zatim pošalji HTTP zahtjev:
+
+http
+```
+GET / HTTP/1.1
+Host: netcat
+```
+
+Pritisni Enter dva puta nakon zaglavlja.
+
+Primjer odgovora:
+
+http
+```
+HTTP/1.1 200 OK
+Server: nginx/1.6.2
+```
+
+`Server: nginx/1.6.2` otkriva naziv i verziju web-poslužitelja.
+
+Netcat možeš koristiti i za druge servise, primjerice FTP (port 21) i SMTP (port 25).
+
+### 3. Osluškivanje porta (Listening)
+
+Na računalu koje će primati vezu pokreni:
+
+bash
+```
+nc -vnlp 1234
+```
+
+Na klijentskom računalu pokreni:
+
+bash
+```
+nc 10.112.159.124 1234
+```
+
+Nakon povezivanja, tekst koji upišeš na jednoj strani prikazuje se na drugoj.
+
+### 4. Najvažnije opcije
+
+| Opcija | Značenje |
+| --- | --- |
+| `-l` | Osluškivanje dolaznih veza |
+| `-p` | Određivanje porta |
+| `-n` | Ne koristi DNS za razrješavanje imena |
+| `-v` | Detaljniji ispis |
+| `-vv` | Još detaljniji ispis |
+| `-k` | Nastavlja osluškivati nakon prekida veze |
+| `-6` | Koristi IPv6 |
+
+Napomena: Portovi ispod 1024 na Linuxu uglavnom zahtijevaju administratorske ovlasti za osluškivanje. Redoslijed opcija može varirati, ali broj porta mora biti naveden uz `-p`.
+
+### 5. Sigurnost
+
+Obični Netcat ne šifrira komunikaciju. Za šifrirane veze može se koristiti `ncat --ssl` ili alat poput `stunnel`.
+
+### Za zapamtiti
+
+- `nc IP PORT` – povezivanje na port.
+- `nc -vnlp PORT` – osluškivanje na portu.
+- Banner grabbing – otkrivanje informacija o servisu.
+- TCP/UDP – protokoli koje Netcat podržava.
+- Ncat – naprednija inačica iz Nmap projekta koja podržava i SSL te IPv6.
+
+Koristi Netcat samo na sustavima za koje imaš dopuštenje, primjerice na dodijeljenom TryHackMe laboratorijskom računalu.
+
+## Active Reconnaissance – završni sažetak
+
+U ovoj lekciji naučili smo pet osnovnih alata za aktivno izviđanje, odnosno izravno prikupljanje informacija o ciljnom sustavu.
+
+### 1. Pet glavnih alata
+
+- Web Browser + Developer Tools – otkrivanje tehnologija, HTTP zaglavlja, JavaScript datoteka i certifikata.
+- Ping – provjera dostupnosti cilja i analiza TTL vrijednosti.
+- Traceroute – otkrivanje mrežne putanje i posrednih routera.
+- Telnet – povezivanje na TCP portove i prikupljanje bannera; nesiguran je jer ne šifrira podatke.
+- Netcat (`nc`) – provjera portova, banner grabbing i komunikacija između klijenta i poslužitelja.
+
+### 2. Brzi pregled naredbi
+
+| Alat | Naredba | Svrha |
+| --- | --- | --- |
+| Ping (Linux/macOS) | `ping -c 10 IP` | Provjera dostupnosti |
+| Ping (Windows) | `ping -n 10 IP` | Provjera dostupnosti |
+| Ping IPv6 | `ping -6 IPv6` | Provjera IPv6 cilja |
+| Traceroute | `traceroute IP` | Praćenje mrežne putanje |
+| Tracert (Windows) | `tracert IP` | Praćenje mrežne putanje |
+| MTR | `mtr IP` | Kontinuirano praćenje putanje |
+| Telnet | `telnet IP PORT` | Povezivanje na TCP port |
+| Netcat klijent | `nc IP PORT` | Povezivanje na port |
+| Netcat poslužitelj | `nc -lvnp PORT` | Osluškivanje porta |
+| Curl | `curl -I http://IP` | Pregled HTTP zaglavlja |
+
+`IP` predstavlja IP adresu cilja, a `PORT` broj porta.
+
+### 3. Preporučeni redoslijed izviđanja
+
+1. Ping
+
+Provjeri odgovara li cilj na ICMP zahtjeve.
+
+2. Traceroute
+
+Istraži mrežnu putanju do cilja.
+
+3. Web preglednik / curl
+
+Pregledaj web-stranicu i HTTP zaglavlja.
+
+4. Netcat
+
+Provjeri dostupne servise i njihove bannere.
+
+### 4. Što dalje učiti?
+
+- Nmap – automatizirano otkrivanje hostova, skeniranje portova i prepoznavanje servisa.
+- Walking An Application – detaljnije istraživanje web-aplikacija pomoću Developer Toolsa.
+- Naprednije tehnike izviđanja i skeniranja obrađuju se u sljedećim lekcijama.
+
+Najvažnije za ispit: Ping provjerava dostupnost, Traceroute otkriva putanju, a Telnet i Netcat omogućuju povezivanje na portove i otkrivanje informacija o servisima. Sve ove tehnike koristi isključivo uz odgovarajuće dopuštenje.

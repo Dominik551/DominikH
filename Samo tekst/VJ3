@@ -1,0 +1,261 @@
+Najbitnije – Web Crawlers
+
+    Web crawler (bot/spider) je program koji automatski pronalazi i pregledava sadržaj web-stranica.
+
+    Crawler može pronaći web-stranicu:
+
+        direktnim otkrivanjem URL-a
+
+        praćenjem linkova (URL-ova) koji se nalaze na već pregledanim stranicama.
+
+    Kada crawler posjeti stranicu, pregledava njezin sadržaj i traži ključne riječi (keywords) i druge informacije.
+
+    Pronađene informacije sprema i šalje tražilici (npr. Googleu).
+
+    Na primjer:
+
+        mywebsite.com → Apple, Banana, Pear
+
+        Tražilica tada zna da ta stranica sadrži te ključne riječi.
+
+    Ako korisnik pretražuje "Apple", tražilica može prikazati mywebsite.com jer je ta stranica indeksirana s tom ključnom riječi.
+
+    Crawler ne ostaje samo na jednoj stranici:
+
+        ako mywebsite.com sadrži link prema anotherwebsite.com
+
+        crawler će slijediti taj link i pokušati pregledati i tu stranicu.
+
+    Tako se postupno stvara mreža indeksiranih web-stranica.
+
+    Primjer:
+
+        mywebsite.com → Apples, Bananas, Pears
+
+        anotherwebsite.com → Tomatoes, Strawberries, Pineapples
+
+    Tražilica zatim može povezati domene s ključnim riječima i prikazati relevantne stranice kada korisnik nešto pretražuje.
+
+    Važno: crawler ne određuje sam redoslijed rezultata pretraživanja.
+
+    Ako više web-stranica sadrži istu ključnu riječ, pojavljuje se pitanje: koja će stranica biti prikazana prva, a koja druga?
+
+    Taj redoslijed određuju algoritmi tražilice, što je sljedeća tema teksta.
+
+Najbitnije – SEO i kontrola crawlera
+
+    SEO (Search Engine Optimisation) je proces optimizacije web-stranice kako bi imala bolji rang u rezultatima tražilice.
+
+    Tražilice općenito daju prednost stranicama koje su lakše za indeksiranje i bolje optimizirane.
+
+    SEO možemo zamisliti kao sustav bodovanja – različiti faktori utječu na konačni rang stranice.
+
+Faktori koji utječu na SEO
+
+    Responsivnost web-stranice
+
+        Stranica treba dobro raditi na različitim preglednicima (Chrome, Firefox itd.).
+
+        Važno je da dobro funkcionira i na mobitelima.
+
+    Mogućnost crawlanja
+
+        Crawler mora moći lako pregledati sadržaj stranice.
+
+        Za to se mogu koristiti Sitemaps.
+
+        Vlasnik stranice također može ograničiti što crawler smije pregledavati.
+
+    Ključne riječi (keywords)
+
+        Sadržaj stranice treba odgovarati pojmovima koje korisnici pretražuju.
+
+        Ako tražilica nema indeksiranu stranicu koja sadrži određenu ključnu riječ, neće imati relevantan rezultat za taj pojam.
+
+Kako tražilica određuje rang?
+
+    Tražilice koriste složene algoritme za određivanje redoslijeda rezultata.
+
+    Google i druge kompanije ne otkrivaju točno kako njihovi algoritmi boduju i rangiraju stranice.
+
+    Osim organskog SEO-a, moguće je platiti oglašavanje kako bi se stranica bolje pozicionirala u rezultatima.
+
+SEO alati
+
+    Postoje alati koji analiziraju koliko je web-stranica dobro optimizirana.
+
+    Primjer iz teksta: Google Site Analyser.
+
+    TryHackMe je prema navedenom primjeru imao SEO rezultat 85/100.
+
+Tko kontrolira crawlere?
+
+    Crawlere osiguravaju tražilice, ali vlasnik web-stranice može odrediti što crawler smije pregledavati.
+
+    Ne želimo uvijek da je sav sadržaj stranice dostupan tražilicama.
+
+    Primjer: administratorska/login stranica ne bi trebala biti lako pronađena putem Googlea.
+
+    Za kontroliranje pristupa crawlerima koristi se datoteka robots.txt.
+
+    robots.txt omogućuje vlasniku web-stranice da crawlerima kaže koje dijelove stranice smiju, a koje ne smiju pregledavati.
+
+Robots.txt – najbitnije
+
+    robots.txt je tekstualna datoteka koja određuje što web crawleri smiju, a što ne smiju indeksirati.
+
+    Nalazi se u root direktoriju web-stranice, npr.:
+
+        mywebsite.com/robots.txt
+
+    Crawler provjerava robots.txt kako bi saznao koja su pravila za indeksiranje.
+
+Najvažnije naredbe
+
+    User-agent – određuje na kojeg se crawlera pravilo odnosi.
+
+        * = svi crawleri
+
+        Googlebot = Googleov crawler
+
+        msnbot = Microsoftov crawler
+
+    Allow – određuje što crawler smije indeksirati.
+
+    Disallow – određuje što crawler ne smije indeksirati.
+
+    Sitemap – navodi lokaciju sitemap datoteke i pomaže tražilici u pronalaženju sadržaja.
+
+Primjer
+
+    Allow: / → crawler može indeksirati cijelu stranicu.
+
+    Disallow: /super-secret-directory/ → crawler ne smije indeksirati taj direktorij.
+
+    Disallow: /not-a-secret/but-this-is/ → može indeksirati /not-a-secret/, ali ne i njegov poddirektorij /but-this-is/.
+
+Kontrola određenih crawlera
+
+    Možemo dopustiti pristup samo određenim crawlerima.
+
+    Primjer:
+
+        Googlebot → Allow
+
+        msnbot → Disallow
+
+    Tako Google može indeksirati stranicu, dok Microsoftov crawler ne može.
+
+Sakrivanje određenih datoteka
+
+    robots.txt može koristiti regex/wildcard pravila za blokiranje određenih vrsta datoteka.
+
+    Primjer: blokiranje svih .ini datoteka.
+
+    .ini datoteke mogu sadržavati osjetljive konfiguracijske podatke, pa ih nije poželjno izložiti crawlerima.
+
+⚠️ Važno za zapamtiti
+
+    robots.txt nije sigurnosna zaštita.
+
+    On govori crawlerima što ne bi trebali indeksirati, ali ne sprječava nužno korisnika da izravno pristupi toj datoteci ili direktoriju.
+
+    Zato se robots.txt ne smije koristiti kao zamjena za autentifikaciju i kontrolu pristupa.
+
+Sitemaps – najbitnije
+
+    Sitemap je poput karte web-stranice – pokazuje crawlerima gdje se nalazi sadržaj na određenoj domeni.
+
+    Pomaže crawlerima da brže i lakše pronađu stranice i sadržaj.
+
+    Sitemap sadrži putanje (URL-ove) do različitih stranica i dijelova web-stranice.
+
+    Za razliku od ilustracije u tekstu, pravi sitemap je strukturirana/formalno formatirana datoteka.
+
+Zašto su Sitemaps važni?
+
+    Crawler ne mora sam tražiti sve linkove i stranice.
+
+    Sitemap mu unaprijed daje rute do sadržaja koje treba pregledati.
+
+    Time se proces crawlanja čini bržim i učinkovitijim.
+
+    Lakše crawlanje može pozitivno utjecati na SEO i optimizaciju web-stranice.
+
+    Što je web-stranica lakša za crawlati, to je općenito bolje optimizirana za tražilicu.
+
+🧠 Najlakše za zapamtiti
+
+Sitemap = karta web-stranice koja crawleru pokazuje gdje se nalazi sadržaj.
+
+    robots.txt → govori crawleru što smije/ne smije pregledavati
+
+    sitemap → govori crawleru gdje se sadržaj nalazi
+
+Google Advanced Searching / Google Dorking – najbitnije
+
+    Google Advanced Search omogućuje preciznije pretraživanje pomoću posebnih operatora.
+
+    Operatori mogu:
+
+        suziti broj rezultata
+
+        pronaći točno određeni sadržaj
+
+        pretraživati samo određenu web-stranicu
+
+        pronaći određene vrste datoteka.
+
+Najvažniji operatori
+
+    "..." → traži točnu frazu.
+
+        Primjer: "gchq news"
+
+        Google vraća rezultate koji sadrže upravo tu frazu.
+
+    site: → pretražuje samo određenu domenu.
+
+        Primjer: site:bbc.co.uk gchq
+
+        Rezultati dolaze samo s bbc.co.uk.
+
+    filetype: → traži određenu vrstu datoteke.
+
+        Primjer: site:bbc.co.uk filetype:pdf
+
+        Pronalazi PDF datoteke koje su indeksirane s te domene.
+
+    cache: → prikazuje Googleovu spremljenu (cached) verziju određene stranice.
+
+    intitle: → traži izraz koji se mora nalaziti u naslovu stranice.
+
+Google Dorking
+
+    Google Dorking je korištenje naprednih Google operatora za pronalaženje specifičnih javno indeksiranih informacija.
+
+    Može se koristiti za pronalaženje sadržaja koji je teško pronaći običnim pretraživanjem.
+
+    Primjer:
+
+        site:bbc.co.uk filetype:pdf
+
+        → pronalazi javno dostupne PDF dokumente na BBC-ovoj domeni.
+
+    Takvim pretragama mogu se pronaći i osjetljive datoteke koje su slučajno javno dostupne ili indeksirane.
+
+⚠️ Bitno
+
+    Samo korištenje Googlea za pronalaženje javno indeksiranih informacija nije samo po sebi ilegalno.
+
+    Legalnost ovisi o tome što napraviš s pronađenim informacijama.
+
+    Zato Google Dorking može biti koristan za sigurnosna istraživanja, ali i potencijalno opasan ako se koristi za neovlašten pristup ili zloupotrebu.
+
+🧠 Za zapamtiti
+
+site: = gdje tražiti
+filetype: = koju vrstu datoteke tražiti
+"..." = točna fraza
+intitle: = izraz u naslovu
+cache: = spremljena verzija stranice
